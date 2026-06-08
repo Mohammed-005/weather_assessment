@@ -14,8 +14,4 @@ jobs:
         run: docker build -t tokyo-weather:test .
 
       - name: Run Container Test
-        run: | 
-          docker run --rm \
-            -e USER_NAME="Github-Actions-Robot" \
-            -e ENVIRONMENT="CI-Testing" \ 
-            tokyo-weather:test
+        run: docker run --rm -e USER_NAME="GitHub-Actions-Robot" -e ENVIRONMENT="CI-Testing" tokyo-weather:test
