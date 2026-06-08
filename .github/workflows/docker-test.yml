@@ -32,4 +32,4 @@ jobs:
       - name: Publish Image to Cloud Vault (GHCR)
         run: |
           IMAGE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper]' '[:lower]')
-        docker push ghcr.io/$IMAGE_OWNER/tokyo-weather:latest
+          docker push ghcr.io/$IMAGE_OWNER/tokyo-weather:latest
