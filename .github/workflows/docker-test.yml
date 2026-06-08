@@ -16,20 +16,59 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Log into GitHub Container Registory
+      - name: Log into GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # ✅ Fix: Convert owner to lowercase and store globally
+      - name: Set lowercase image owner
+        run: echo "IMAGE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
       - name: Build and Tag Optimized Image
         run: |
-          IMAGE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper]' '[:lower]')
           docker build -t ghcr.io/$IMAGE_OWNER/tokyo-weather:latest .
 
       - name: Run Production Sanity Test
-        run: | 
-          IMAGE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper]' '[:lower]')
-          docker run --rm -e USER_NAME="GH-Automation" -e ENVIRONMENT="Registry-Test" ghcr.io/$IMAGE_OWNER/tokyo-weather:latest
+        run: |
+          docker run --rm \
+            -e USER_NAME="GH-Automation" \
+            -e ENVIRONMENT="Registry-Test" \
+            ghcr.io/$IMAGE_OWNER/tokyo-weather:latest
 
       - name: Publish Image to Cloud Vault (GHCR)
         run: |
-          IMAGE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper]' '[:lower]')
           docker push ghcr.io/$IMAGE_OWNER/tokyo-weather:latest
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
